@@ -2,5 +2,7 @@
 
 namespace loglib
 {
-    void RenderImGui ();
+    class Log;
+
+    void RenderImGui ( Log const & log, bool fullScreen = false );
 }
