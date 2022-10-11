@@ -23,7 +23,7 @@ target_include_directories ( LogLib
         include/LogLib 
         source
         external/glfw/include
-        
+        external/imgui/backends
 )
 
 target_link_libraries ( LogLib 
@@ -38,8 +38,12 @@ target_sources ( LogLib
         external/imgui/imgui_tables.cpp
         external/imgui/imgui_draw.cpp
         external/imgui/imgui_widgets.cpp
+        external/imgui/imgui_demo.cpp
+        external/imgui/backends/imgui_impl_glfw.cpp
+        external/imgui/backends/imgui_impl_opengl3.cpp
 
     PRIVATE
         source/ImGui.cpp
         source/LogWindow.cpp
+        source/Log.cpp
 )
