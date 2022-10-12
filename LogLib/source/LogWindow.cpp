@@ -44,6 +44,7 @@ void loglib::LogWindow::Update ()
 
         ImGui::NewFrame ();
         
+        //ImGui::ShowDemoWindow ();
         RenderImGui ( *log, true );
 
         ImGui::EndFrame ();

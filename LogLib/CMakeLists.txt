@@ -2,6 +2,8 @@ cmake_minimum_required ( VERSION 3.24.2 )
 
 project ( LogLib )
 
+set ( CMAKE_CXX_STANDARD 17 )
+
 add_library ( LogLib )
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
