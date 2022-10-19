@@ -4,3 +4,4 @@ project ( LogLib )
 
 add_subdirectory ( LogLib )
 add_subdirectory ( Demo )
+add_subdirectory ( LogLibViewer )

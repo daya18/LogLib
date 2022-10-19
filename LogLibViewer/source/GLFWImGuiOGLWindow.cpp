@@ -1,17 +1,13 @@
-#include "LogWindow.hpp"
+#include "GLFWImGuiOGLWindow.hpp"
 
-#include "ImGui.hpp"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
 
-#include "Log.hpp"
-
-loglib::LogWindow::LogWindow ( Log const & log )
-: log ( &log )
+loglib::GLFWImGuiOGLWindow::GLFWImGuiOGLWindow ( std::string const & name )
 {
     glfwInit ();
 
-    window = glfwCreateWindow ( 500, 500, "log", nullptr, nullptr );
+    window = glfwCreateWindow ( 500, 500, name.data (), nullptr, nullptr );
     glfwMakeContextCurrent ( window );
 
     imguiContext = ImGui::CreateContext ();
@@ -22,18 +18,18 @@ loglib::LogWindow::LogWindow ( Log const & log )
     ImGui::StyleColorsDark ();
 }
 
-loglib::LogWindow::~LogWindow ()
+loglib::GLFWImGuiOGLWindow::~GLFWImGuiOGLWindow ()
 {
     glfwDestroyWindow ( window );
     glfwTerminate ();
 }
 
-bool loglib::LogWindow::ShouldClose () const
+bool loglib::GLFWImGuiOGLWindow::ShouldClose () const
 {
     return glfwWindowShouldClose ( window );
 }
 
-void loglib::LogWindow::Update ()
+void loglib::GLFWImGuiOGLWindow::BeginFrame ()
 {
     glfwPollEvents ();
 
@@ -42,13 +38,13 @@ void loglib::LogWindow::Update ()
     ImGui_ImplOpenGL3_NewFrame ();
     ImGui_ImplGlfw_NewFrame ();
 
-        ImGui::NewFrame ();
-        
-        //ImGui::ShowDemoWindow ();
-        RenderImGui ( *log, true );
+    ImGui::NewFrame ();
+}
 
-        ImGui::EndFrame ();
-        ImGui::Render ();
+void loglib::GLFWImGuiOGLWindow::EndFrame ()
+{
+    ImGui::EndFrame ();
+    ImGui::Render ();
 
     ImGui_ImplOpenGL3_RenderDrawData ( ImGui::GetDrawData () );
 

@@ -1,6 +1,6 @@
 [submodule "LogLib/external/imgui"]
-	path = LogLib/external/imgui
+	path = LogLibViewer/external/imgui
 	url = https://github.com/ocornut/imgui.git
 [submodule "LogLib/external/glfw"]
-	path = LogLib/external/glfw
+	path = LogLibViewer/external/glfw
 	url = https://github.com/glfw/glfw.git

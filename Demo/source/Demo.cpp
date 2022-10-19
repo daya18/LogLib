@@ -1,9 +1,10 @@
-#include "LogLib/Log.hpp"
-#include "LogLib/LogWindow.hpp"
+#include "LogLib/LogLib.hpp"
 
 #include <cstdlib>
 #include <random>
 #include <array>
+#include <filesystem>
+#include <thread>
 
 std::string GetLogData ( loglib::LogSeverities severity )
 {
@@ -29,10 +30,12 @@ int main ()
     std::uniform_int_distribution <int> generateLogDistribution ( 0, 30 );
     std::uniform_int_distribution <int> logSeverityDistribution ( 0, 3 );
 
-    loglib::Log log;
-    loglib::LogWindow logWindow { log };
+    loglib::Logger logger { "Demo" };
 
-    while ( ! logWindow.ShouldClose () )
+    logger << loglib::LogEntry { loglib::LogSeverities::verbose, 
+        "Working directory:" + std::filesystem::current_path ().string () };
+    
+    while ( 1 )
     {
         if ( generateLogDistribution ( randomEngine ) == 0 )
         {
@@ -40,12 +43,12 @@ int main ()
             
             using namespace std::string_literals;
 
-            std::string data = "Log "s + std::to_string ( log.GetEntries().size () )
+            std::string data = "Log "s //+ std::to_string ( logger.GetEntries().size () )
                 + ": "s + GetLogData ( severity );
 
-            log << loglib::LogEntry { severity, data };
-        }
-        
-        logWindow.Update ();
+            logger << loglib::LogEntry { severity, data };
+
+            std::this_thread::sleep_for ( std::chrono::seconds ( 2 ) );
+        }       
     }
 }
