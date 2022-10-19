@@ -13,9 +13,11 @@ namespace loglib
     class ImGuiRenderer
     {
     public:
+        ImGuiRenderer ( ImGuiWindow & );
         ImGuiRenderer ( ImGuiWindow &, std::string const & logFilePath );
 
         void Render ();
+        void SetFile ( std::string const & filePath );
 
     private:
         void SyncLog ();
@@ -32,4 +34,5 @@ namespace loglib
 
         std::vector <loglib::LogEntry> logEntries;
     };
+
 }

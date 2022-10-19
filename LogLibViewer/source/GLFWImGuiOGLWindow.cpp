@@ -8,6 +8,8 @@ loglib::GLFWImGuiOGLWindow::GLFWImGuiOGLWindow ( std::string const & name )
     glfwInit ();
 
     window = glfwCreateWindow ( 500, 500, name.data (), nullptr, nullptr );
+    glfwSetWindowUserPointer ( window, this );
+
     glfwMakeContextCurrent ( window );
 
     imguiContext = ImGui::CreateContext ();
@@ -16,6 +18,8 @@ loglib::GLFWImGuiOGLWindow::GLFWImGuiOGLWindow ( std::string const & name )
     ImGui_ImplOpenGL3_Init ();
     
     ImGui::StyleColorsDark ();
+    
+    glfwSetDropCallback ( window, glfwDropCallback );
 }
 
 loglib::GLFWImGuiOGLWindow::~GLFWImGuiOGLWindow ()
@@ -49,4 +53,11 @@ void loglib::GLFWImGuiOGLWindow::EndFrame ()
     ImGui_ImplOpenGL3_RenderDrawData ( ImGui::GetDrawData () );
 
     glfwSwapBuffers ( window );
+}
+
+void loglib::GLFWImGuiOGLWindow::glfwDropCallback 
+( GLFWwindow * window, int count, char const ** files )
+{
+    if ( GetThis(window).fileDropCallback )
+        GetThis(window).fileDropCallback ( { files [0] } );
 }

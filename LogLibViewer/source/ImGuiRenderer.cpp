@@ -29,10 +29,9 @@ loglib::ImGuiRenderer::toggleSeverityKeys
     { LogSeverities::error,     ImGuiKey_E },
 };
 
-loglib::ImGuiRenderer::ImGuiRenderer ( ImGuiWindow & window, std::string const & logFilePath )
+loglib::ImGuiRenderer::ImGuiRenderer ( ImGuiWindow & window )
 :   
     window      ( & window ),
-    logReader   ( logFilePath ),
     
     showSeverityFlags {
         { LogSeverities::verbose, true },
@@ -41,6 +40,14 @@ loglib::ImGuiRenderer::ImGuiRenderer ( ImGuiWindow & window, std::string const &
         { LogSeverities::error, true },
     }
 {
+    window.SetFileDropCallback ( 
+        [ this ] ( std::string const & filePath ) { SetFile ( filePath ); } );
+}
+
+loglib::ImGuiRenderer::ImGuiRenderer ( ImGuiWindow & window, std::string const & filePath )
+: ImGuiRenderer ( window )
+{
+    SetFile ( filePath );
 }
 
 void loglib::ImGuiRenderer::Render ()
@@ -81,9 +88,8 @@ void loglib::ImGuiRenderer::Render ()
                 if ( showSeverityFlags.at ( entry.severity ) )
                     ImGui::TextColored ( severityColors.at ( entry.severity ), "%s", entry.data.data () );
             }
-
+            
         ImGui::EndChild ();
-        
     ImGui::End ();
 }
 
@@ -98,4 +104,12 @@ void loglib::ImGuiRenderer::SyncLog ()
 
     while ( logReader >> entry )
         logEntries.push_back ( entry );
+}
+
+void loglib::ImGuiRenderer::SetFile ( std::string const & filePath ) 
+{
+    if ( logReader.SetFile ( filePath ) )
+    {
+        logEntries.clear (); 
+    }
 }
